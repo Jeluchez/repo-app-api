@@ -1,0 +1,12 @@
+html
+    head 
+        style(type='text/css')
+            include ./styles.css
+    body
+        div(class='container')
+            h2(class='name') 
+                strong Hey #{name}! 
+            div(class="body") Gracias por unirte a la aplicación de chat-app. Para finalizar el registro, por favor da click en el botón de abajo para verificar tu cuenta
+            a(href=`${url}/${id}`) Verificar correo electrónico   
+            div Una vez verificada tu cuenta, podrás acceder a la aplicación de chat-app
+
