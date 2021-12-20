@@ -4,8 +4,8 @@ const dbConnection = async() => {
 
     try {
         
-        // await mongoose.connect( process.env.DB_CNN_STRING_REMOTE, {
-        await mongoose.connect( 'mongodb://localhost:27017/repo-db', {
+        await mongoose.connect( process.env.DB_CNN_STRING_REMOTE, {
+        // await mongoose.connect( 'mongodb://localhost:27017/repo-db', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true            
