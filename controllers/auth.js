@@ -3,8 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../models/User');
 const { generarJWT } = require('../helpers/jwt');
-const Chat = require('../models/Chat');
-const { sendEmail } = require('../helpers/email');
+const { default: axios } = require('axios');
 
 
 const createUser = async (req, res = response) => {
@@ -175,7 +174,7 @@ const login = async (req, res) => {
 const renewToken = async (req, res) => {
 
     const uid = req.uid;
-    console.log('id: ', uid);
+    // console.log('id: ', uid);
     // Generar un nuevo JWT
     const token = await generarJWT(uid);
 
@@ -190,25 +189,48 @@ const renewToken = async (req, res) => {
 }
 
 const recieveOauth = async (req, res) => {
-    const requestToken = req.query.code
 
-    axios({
-        method: 'post',
-        url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
-        // Set the content type header, so that we get the response in JSON
-        headers: {
-            accept: 'application/json'
+    const clientID = '53088d73f92fd54ccefe';
+    const clientSecret = 'a713326b7451757f726e2dd6508fa1f7fa5cbb23';
+
+    const requestToken = req.query.code
+    
+    try {
+        const { data } = await
+            axios({
+                method: 'post',
+                url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
+                // Set the content type header, so that we get the response in JSON
+                headers: {
+                    accept: 'application/json'
+                }
+            })
+
+        if (data.access_token) {
+            res.redirect(`http://localhost:3000/success/${data.access_token}`);
         }
-    }).then((response) => {
-        access_token = response.data.access_token
-        res.redirect('/success');
-    })
+    } catch (error) {
+
+        res.status(500).json({
+            ok: false,
+            msg: 'Contact you to admin',
+            error: value
+        });
+
+    }
+
 }
+
+
+
+
+
+
 module.exports = {
     read,
     createUser,
     login,
     renewToken,
     confirmEmail,
-    recieveOauth
+    recieveOauth,
 }

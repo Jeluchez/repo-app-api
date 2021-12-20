@@ -32,6 +32,7 @@ class Server {
 
         // API End Points
         this.app.use( '/api/v1/user', require('../router/auth') );
+
     }
     execute() {
 
